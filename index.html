@@ -1,0 +1,1657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>THE ART OF — 3D Sculptor</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+:root {
+    --bg: #0b0b0b;
+    --surface: #111111;
+    --surface2: #171717;
+    --text: #f1eee8;
+    --muted: #898989;
+    --line: #292929;
+    --accent: #d8ff3e;
+    --cursor: rgba(216,255,62,.12);
+}
+
+body.light {
+    --bg: #eeeae2;
+    --surface: #e5e1d9;
+    --surface2: #dcd8d0;
+    --text: #111;
+    --muted: #65635f;
+    --line: #c8c3b9;
+    --accent: #4f5f00;
+    --cursor: rgba(79,95,0,.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, sans-serif;
+    overflow-x: hidden;
+    transition: background .5s, color .5s;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+}
+
+::selection {
+    background: var(--accent);
+    color: #000;
+}
+
+/* CURSOR */
+
+.cursor {
+    position: fixed;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: var(--cursor);
+    filter: blur(60px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+/* NAV */
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 82px;
+    padding: 0 5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+    backdrop-filter: blur(18px);
+    background: color-mix(in srgb, var(--bg) 75%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+}
+
+.logo {
+    font-family: "DM Mono", monospace;
+    font-size: 14px;
+    letter-spacing: -.5px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.logo span {
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 28px;
+    font-family: "DM Mono", monospace;
+    font-size: 10px;
+}
+
+.nav-links a {
+    color: var(--muted);
+    transition: .25s;
+}
+
+.nav-links a:hover {
+    color: var(--text);
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.theme {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.menu {
+    display: none;
+}
+
+/* GENERAL */
+
+.container {
+    width: min(1400px, 90vw);
+    margin: auto;
+}
+
+section {
+    position: relative;
+    z-index: 1;
+}
+
+.eyebrow {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+}
+
+h2 {
+    font-size: clamp(45px, 7vw, 105px);
+    font-weight: 400;
+    letter-spacing: -5px;
+    line-height: .9;
+}
+
+.serif {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+}
+
+/* HERO */
+
+.hero {
+    min-height: 100vh;
+    padding: 150px 5vw 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.hero-intro {
+    max-width: 500px;
+}
+
+.hero-intro p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.hero h1 {
+    font-size: clamp(70px, 13vw, 190px);
+    font-weight: 400;
+    line-height: .78;
+    letter-spacing: -10px;
+    max-width: 1300px;
+    margin: 70px 0;
+}
+
+.hero h1 em {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+}
+
+.hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.hero-meta {
+    display: flex;
+    gap: 55px;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.meta-number {
+    font-size: 25px;
+}
+
+.meta-label {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+}
+
+.circle-arrow {
+    width: 85px;
+    height: 85px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    transition: .4s;
+}
+
+.circle-arrow:hover {
+    background: var(--accent);
+    color: #000;
+    transform: rotate(45deg);
+}
+
+/* HERO ART */
+
+.hero-art {
+    position: absolute;
+    width: 38vw;
+    height: 55vh;
+    right: 7vw;
+    top: 24%;
+    z-index: -1;
+    overflow: hidden;
+    opacity: .75;
+}
+
+.hero-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.15);
+    mix-blend-mode: screen;
+    animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.025); }
+}
+
+/* GALLERY */
+
+.gallery-section {
+    padding: 160px 0;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 80px;
+}
+
+.section-heading p {
+    max-width: 350px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 45px;
+    flex-wrap: wrap;
+}
+
+.filter {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    padding: 10px 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    transition: .25s;
+}
+
+.filter.active,
+.filter:hover {
+    background: var(--text);
+    color: var(--bg);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+}
+
+.work {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--surface);
+}
+
+.work:nth-child(1) {
+    grid-column: span 7;
+    aspect-ratio: 1.15;
+}
+
+.work:nth-child(2) {
+    grid-column: span 5;
+    aspect-ratio: .9;
+}
+
+.work:nth-child(3) {
+    grid-column: span 5;
+    aspect-ratio: 1;
+}
+
+.work:nth-child(4) {
+    grid-column: span 7;
+    aspect-ratio: 1.2;
+}
+
+.work:nth-child(5) {
+    grid-column: span 4;
+    aspect-ratio: .9;
+}
+
+.work:nth-child(6) {
+    grid-column: span 8;
+    aspect-ratio: 1.4;
+}
+
+.work img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s cubic-bezier(.2,.7,.2,1);
+    filter: saturate(.75);
+}
+
+.work:hover img {
+    transform: scale(1.07);
+}
+
+.work-overlay {
+    position: absolute;
+    inset: 0;
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,.8));
+    opacity: 0;
+    transition: .4s;
+}
+
+.work:hover .work-overlay {
+    opacity: 1;
+}
+
+.work-title {
+    font-size: 22px;
+}
+
+.work-type {
+    color: #aaa;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+}
+
+/* ABOUT */
+
+.about {
+    padding: 180px 0;
+    border-top: 1px solid var(--line);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+}
+
+.about-image {
+    height: 650px;
+    overflow: hidden;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+}
+
+.about-text h2 {
+    margin-bottom: 50px;
+}
+
+.about-text p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.9;
+    max-width: 530px;
+    margin-bottom: 20px;
+}
+
+.info-list {
+    margin-top: 45px;
+    border-top: 1px solid var(--line);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+}
+
+.info-row span:last-child {
+    color: var(--muted);
+}
+
+/* SERVICES */
+
+.services {
+    padding: 150px 0;
+    background: var(--surface);
+}
+
+.service-intro {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+
+.service-intro p {
+    width: 350px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.service-grid {
+    border-top: 1px solid var(--line);
+}
+
+.service {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 40px;
+    align-items: center;
+    padding: 35px 0;
+    border-bottom: 1px solid var(--line);
+    transition: .3s;
+}
+
+.service:hover {
+    padding-left: 20px;
+    background: var(--surface2);
+}
+
+.service-num {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.service h3 {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.service p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    max-width: 350px;
+}
+
+.service-arrow {
+    font-size: 20px;
+}
+
+/* FEATURE */
+
+.feature {
+    padding: 180px 0;
+}
+
+.feature-box {
+    min-height: 600px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 60px;
+}
+
+.feature-box img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(.3);
+    z-index: -2;
+}
+
+.feature-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 20%, rgba(0,0,0,.85));
+    z-index: -1;
+}
+
+.feature-content {
+    max-width: 700px;
+    color: white;
+}
+
+.feature-content h2 {
+    margin-bottom: 25px;
+}
+
+.feature-content p {
+    color: #bbb;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.button {
+    display: inline-flex;
+    padding: 15px 23px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 40px;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    transition: .3s;
+}
+
+.button:hover {
+    background: white;
+    color: black;
+}
+
+/* PROCESS */
+
+.process {
+    padding: 160px 0;
+    border-top: 1px solid var(--line);
+}
+
+.process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 90px;
+}
+
+.process-card {
+    border-top: 1px solid var(--line);
+    padding-top: 25px;
+}
+
+.process-number {
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.process-card h3 {
+    font-size: 22px;
+    font-weight: 400;
+    margin: 70px 0 20px;
+}
+
+.process-card p {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+/* TESTIMONIALS */
+
+.testimonials {
+    padding: 150px 0;
+    background: var(--surface);
+}
+
+.quote {
+    max-width: 1000px;
+    margin: 100px auto 0;
+    text-align: center;
+}
+
+.quote p {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(30px, 4vw, 55px);
+    font-style: italic;
+    line-height: 1.15;
+}
+
+.quote span {
+    display: block;
+    margin-top: 35px;
+    font-family: "DM Mono", monospace;
+    color: var(--muted);
+    font-size: 9px;
+}
+
+/* CONTACT */
+
+.contact {
+    padding: 180px 0 80px;
+}
+
+.contact h2 {
+    font-size: clamp(70px, 13vw, 180px);
+    line-height: .78;
+    margin-bottom: 90px;
+}
+
+.contact h2 span {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+}
+
+.contact-bottom {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    padding-top: 30px;
+}
+
+.contact-info {
+    display: flex;
+    gap: 100px;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-item small {
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+}
+
+.contact-item a {
+    font-size: 14px;
+}
+
+footer {
+    width: 90vw;
+    margin: auto;
+    padding: 25px 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-family: "DM Mono", monospace;
+    font-size: 8px;
+}
+
+/* LIGHTBOX */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.94);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.lightbox.open {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+}
+
+.close {
+    position: absolute;
+    right: 30px;
+    top: 25px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* REVEAL */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(35px);
+    transition: opacity .9s ease, transform .9s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width: 800px) {
+
+    nav {
+        height: 70px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .menu {
+        display: block;
+        border: 0;
+        background: none;
+        color: var(--text);
+        font-size: 20px;
+    }
+
+    .hero {
+        padding-top: 130px;
+    }
+
+    .hero h1 {
+        font-size: 20vw;
+        letter-spacing: -5px;
+        margin: 100px 0;
+    }
+
+    .hero-art {
+        width: 70vw;
+        height: 45vh;
+        right: 0;
+        top: 27%;
+        opacity: .45;
+    }
+
+    .hero-bottom {
+        align-items: flex-start;
+    }
+
+    .hero-meta {
+        gap: 20px;
+    }
+
+    .meta-number {
+        font-size: 18px;
+    }
+
+    .circle-arrow {
+        width: 60px;
+        height: 60px;
+    }
+
+    h2 {
+        letter-spacing: -3px;
+    }
+
+    .section-heading {
+        display: block;
+    }
+
+    .section-heading p {
+        margin-top: 30px;
+    }
+
+    .gallery {
+        display: block;
+    }
+
+    .work {
+        margin-bottom: 15px;
+        aspect-ratio: 1.1 !important;
+    }
+
+    .work-overlay {
+        opacity: 1;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+
+    .about-image {
+        height: 450px;
+    }
+
+    .service-intro {
+        display: block;
+    }
+
+    .service-intro p {
+        margin-top: 30px;
+        width: auto;
+    }
+
+    .service {
+        grid-template-columns: 40px 1fr 25px;
+        gap: 10px;
+    }
+
+    .service p {
+        display: none;
+    }
+
+    .service h3 {
+        font-size: 20px;
+    }
+
+    .feature-box {
+        min-height: 500px;
+        padding: 30px;
+    }
+
+    .process-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 50px 20px;
+    }
+
+    .process-card h3 {
+        margin-top: 40px;
+    }
+
+    .contact h2 {
+        font-size: 20vw;
+    }
+
+    .contact-bottom {
+        display: block;
+    }
+
+    .contact-info {
+        display: block;
+    }
+
+    .contact-item {
+        margin-bottom: 30px;
+    }
+
+    footer {
+        display: block;
+        line-height: 2;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="cursor"></div>
+
+<!-- NAVIGATION -->
+
+<nav>
+    <a href="#" class="logo">
+        THE ART OF
+        <span>3D SCULPTURE · CHARACTER · DESIGN</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="#gallery">01 Gallery</a>
+        <a href="#about">02 About</a>
+        <a href="#services">03 Services</a>
+        <a href="#process">04 Process</a>
+        <a href="#contact">05 Contact</a>
+    </div>
+
+    <div class="nav-right">
+        <button class="theme" id="theme">◐</button>
+        <button class="menu">☰</button>
+    </div>
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-top">
+        <div class="hero-intro">
+            <div class="eyebrow">DIGITAL SCULPTOR · CHARACTER ARTIST</div>
+
+            <p>
+                Creating characters, creatures and worlds
+                somewhere between imagination and reality.
+            </p>
+        </div>
+    </div>
+
+    <h1 class="reveal">
+        Forms<br>
+        <em>with</em> feeling.
+    </h1>
+
+    <div class="hero-art">
+        <img
+            src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1400&q=90"
+            alt="Sculpture">
+    </div>
+
+    <div class="hero-bottom">
+
+        <div class="hero-meta">
+
+            <div class="meta-item">
+                <span class="meta-number">37+</span>
+                <span class="meta-label">Projects</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-number">08</span>
+                <span class="meta-label">Years creating</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-number">∞</span>
+                <span class="meta-label">Ideas</span>
+            </div>
+
+        </div>
+
+        <a href="#gallery" class="circle-arrow">↓</a>
+
+    </div>
+
+</section>
+
+
+<!-- GALLERY -->
+
+<section class="gallery-section" id="gallery">
+
+<div class="container">
+
+    <div class="section-heading reveal">
+
+        <div>
+            <div class="eyebrow">01 — GALLERY</div>
+            <h2>Selected<br><span class="serif">works.</span></h2>
+        </div>
+
+        <p>
+            A selection of character sculptures, creatures,
+            collectibles and visual development created across
+            personal and professional projects.
+        </p>
+
+    </div>
+
+
+    <div class="filters">
+
+        <button class="filter active" data-filter="all">ALL</button>
+        <button class="filter" data-filter="character">CHARACTERS</button>
+        <button class="filter" data-filter="creature">CREATURES</button>
+        <button class="filter" data-filter="concept">CONCEPT</button>
+
+    </div>
+
+
+    <div class="gallery">
+
+        <div class="work reveal" data-category="character"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1400&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">The Wanderer</div>
+                    <div class="work-type">CHARACTER · 2026</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+
+        <div class="work reveal" data-category="creature"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=1200&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">Apex</div>
+                    <div class="work-type">CREATURE · 2025</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+
+        <div class="work reveal" data-category="concept"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&w=1200&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">Fragment</div>
+                    <div class="work-type">CONCEPT · 2025</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+
+        <div class="work reveal" data-category="character"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=1400&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">The Guardian</div>
+                    <div class="work-type">CHARACTER · 2025</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+
+        <div class="work reveal" data-category="creature"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&w=1200&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">Untamed</div>
+                    <div class="work-type">CREATURE · 2024</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+
+        <div class="work reveal" data-category="concept"
+             onclick="openLightbox(this)">
+            <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=1500&q=90">
+            <div class="work-overlay">
+                <div>
+                    <div class="work-title">Other Worlds</div>
+                    <div class="work-type">VISUAL DEVELOPMENT · 2024</div>
+                </div>
+                <span>↗</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+<div class="container">
+
+    <div class="about-grid">
+
+        <div class="about-image reveal">
+
+            <img
+                src="https://images.unsplash.com/photo-1561214115-9c9a4d7b5f7e?auto=format&fit=crop&w=1200&q=90"
+                alt="Artist workspace">
+
+        </div>
+
+
+        <div class="about-text reveal">
+
+            <div class="eyebrow">02 — ABOUT</div>
+
+            <h2>
+                Built from<br>
+                <span class="serif">imagination.</span>
+            </h2>
+
+            <p>
+                I'm a 3D sculptor and character artist fascinated by
+                faces, anatomy, creatures and the tiny details that
+                make fictional beings feel alive.
+            </p>
+
+            <p>
+                My work moves between digital sculpture,
+                character design, collectibles and visual
+                development.
+            </p>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span>ROLE</span>
+                    <span>3D SCULPTOR</span>
+                </div>
+
+                <div class="info-row">
+                    <span>SOFTWARE</span>
+                    <span>ZBRUSH · BLENDER · MARVELOUS</span>
+                </div>
+
+                <div class="info-row">
+                    <span>FOCUS</span>
+                    <span>CHARACTER · CREATURE · DESIGN</span>
+                </div>
+
+                <div class="info-row">
+                    <span>AVAILABLE</span>
+                    <span>SELECT COMMISSIONS</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="services" id="services">
+
+<div class="container">
+
+    <div class="service-intro reveal">
+
+        <div>
+            <div class="eyebrow">03 — SERVICES</div>
+            <h2>
+                Let's make<br>
+                <span class="serif">something.</span>
+            </h2>
+        </div>
+
+        <p>
+            From a rough sketch to a production-ready
+            character. Every project starts with an idea
+            and ends with something tangible.
+        </p>
+
+    </div>
+
+
+    <div class="service-grid">
+
+        <div class="service reveal">
+            <span class="service-num">01</span>
+            <h3>Character Sculpting</h3>
+            <p>
+                High-detail digital sculptures designed
+                for games, film, collectibles and portfolios.
+            </p>
+            <span class="service-arrow">↗</span>
+        </div>
+
+        <div class="service reveal">
+            <span class="service-num">02</span>
+            <h3>Creature Design</h3>
+            <p>
+                Original creatures built around anatomy,
+                silhouette and visual storytelling.
+            </p>
+            <span class="service-arrow">↗</span>
+        </div>
+
+        <div class="service reveal">
+            <span class="service-num">03</span>
+            <h3>3D Collectibles</h3>
+            <p>
+                Sculpting and preparing characters for
+                statues, figurines and physical production.
+            </p>
+            <span class="service-arrow">↗</span>
+        </div>
+
+        <div class="service reveal">
+            <span class="service-num">04</span>
+            <h3>Concept Development</h3>
+            <p>
+                Turning loose ideas into strong visual
+                concepts and production-ready designs.
+            </p>
+            <span class="service-arrow">↗</span>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- FEATURE -->
+
+<section class="feature">
+
+<div class="container">
+
+    <div class="feature-box reveal">
+
+        <img
+            src="https://images.unsplash.com/photo-1577083552431-6e5fd01988b5?auto=format&fit=crop&w=1800&q=90"
+            alt="Featured project">
+
+        <div class="feature-content">
+
+            <div class="eyebrow">FEATURED PROJECT · 2026</div>
+
+            <h2>
+                The things<br>
+                <span class="serif">we become.</span>
+            </h2>
+
+            <p>
+                A personal exploration of character, identity
+                and transformation through digital sculpture.
+            </p>
+
+            <a href="#contact" class="button">
+                DISCUSS A PROJECT →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- PROCESS -->
+
+<section class="process" id="process">
+
+<div class="container">
+
+    <div class="eyebrow">04 — PROCESS</div>
+
+    <h2 class="reveal">
+        From idea<br>
+        to <span class="serif">form.</span>
+    </h2>
+
+
+    <div class="process-grid">
+
+        <div class="process-card reveal">
+            <span class="process-number">01</span>
+            <h3>Discover</h3>
+            <p>
+                We discuss the idea, references, mood,
+                character and intended final result.
+            </p>
+        </div>
+
+        <div class="process-card reveal">
+            <span class="process-number">02</span>
+            <h3>Explore</h3>
+            <p>
+                Shapes, silhouettes and proportions are
+                explored until the character starts to speak.
+            </p>
+        </div>
+
+        <div class="process-card reveal">
+            <span class="process-number">03</span>
+            <h3>Sculpt</h3>
+            <p>
+                The approved direction becomes a detailed
+                digital sculpture with anatomy and surface detail.
+            </p>
+        </div>
+
+        <div class="process-card reveal">
+            <span class="process-number">04</span>
+            <h3>Deliver</h3>
+            <p>
+                Final renders, files or production-ready assets
+                are prepared according to the project.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- TESTIMONIALS -->
+
+<section class="testimonials">
+
+<div class="container">
+
+    <div class="eyebrow">WHAT PEOPLE SAY</div>
+
+    <div class="quote reveal">
+
+        <p>
+            “There is something strangely alive
+            about the characters. They feel like
+            they existed before you sculpted them.”
+        </p>
+
+        <span>— CREATIVE DIRECTOR · PRIVATE COMMISSION</span>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+<div class="container">
+
+    <div class="eyebrow">05 — CONTACT</div>
+
+    <h2 class="reveal">
+        Let's make<br>
+        <span>something real.</span>
+    </h2>
+
+    <div class="contact-bottom">
+
+        <div class="contact-info">
+
+            <div class="contact-item">
+                <small>EMAIL</small>
+                <a href="mailto:hello@yourname.com">
+                    hello@yourname.com
+                </a>
+            </div>
+
+            <div class="contact-item">
+                <small>INSTAGRAM</small>
+                <a href="#">
+                    @yourhandle
+                </a>
+            </div>
+
+            <div class="contact-item">
+                <small>LOCATION</small>
+                <span>INDIA · AVAILABLE WORLDWIDE</span>
+            </div>
+
+        </div>
+
+        <a href="mailto:hello@yourname.com" class="circle-arrow">
+            ↗
+        </a>
+
+    </div>
+
+</div>
+
+</section>
+
+
+<footer>
+
+    <span>© 2026 THE ART OF — ALL RIGHTS RESERVED.</span>
+
+    <span>
+        3D SCULPTOR · CHARACTER ARTIST · CREATOR
+    </span>
+
+</footer>
+
+
+<!-- LIGHTBOX -->
+
+<div class="lightbox" id="lightbox">
+
+    <span class="close" onclick="closeLightbox()">×</span>
+
+    <img id="lightboxImage" src="" alt="Artwork">
+
+</div>
+
+
+<script>
+
+/* CURSOR */
+
+const cursor = document.querySelector(".cursor");
+
+document.addEventListener("mousemove", e => {
+
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+    cursor.style.opacity = "1";
+
+});
+
+
+/* THEME */
+
+const themeButton = document.getElementById("theme");
+
+themeButton.addEventListener("click", () => {
+
+    document.body.classList.toggle("light");
+
+    themeButton.textContent =
+        document.body.classList.contains("light")
+        ? "☼"
+        : "◐";
+
+});
+
+
+/* SCROLL REVEALS */
+
+const observer = new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if(entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+
+        });
+
+    },
+    {
+        threshold: .12
+    }
+);
+
+document.querySelectorAll(".reveal")
+    .forEach(el => observer.observe(el));
+
+
+/* GALLERY FILTER */
+
+const filters = document.querySelectorAll(".filter");
+const works = document.querySelectorAll(".work");
+
+filters.forEach(filter => {
+
+    filter.addEventListener("click", () => {
+
+        filters.forEach(f =>
+            f.classList.remove("active")
+        );
+
+        filter.classList.add("active");
+
+        const category = filter.dataset.filter;
+
+        works.forEach(work => {
+
+            if(category === "all" ||
+               work.dataset.category === category) {
+
+                work.style.display = "";
+
+            } else {
+
+                work.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/* LIGHTBOX */
+
+function openLightbox(work) {
+
+    const image = work.querySelector("img");
+
+    document.getElementById("lightboxImage").src =
+        image.src;
+
+    document.getElementById("lightbox")
+        .classList.add("open");
+
+    document.body.style.overflow = "hidden";
+}
+
+
+function closeLightbox() {
+
+    document.getElementById("lightbox")
+        .classList.remove("open");
+
+    document.body.style.overflow = "";
+
+}
+
+
+document.getElementById("lightbox")
+    .addEventListener("click", e => {
+
+        if(e.target.id === "lightbox") {
+            closeLightbox();
+        }
+
+    });
+
+
+/* ESC CLOSE */
+
+document.addEventListener("keydown", e => {
+
+    if(e.key === "Escape") {
+        closeLightbox();
+    }
+
+});
+
+
+/* MAGNETIC BUTTON EFFECT */
+
+document.querySelectorAll(".button, .circle-arrow")
+.forEach(button => {
+
+    button.addEventListener("mousemove", e => {
+
+        const rect = button.getBoundingClientRect();
+
+        const x =
+            e.clientX -
+            rect.left -
+            rect.width / 2;
+
+        const y =
+            e.clientY -
+            rect.top -
+            rect.height / 2;
+
+        button.style.transform =
+            `translate(${x * .12}px, ${y * .12}px)`;
+
+    });
+
+    button.addEventListener("mouseleave", () => {
+
+        button.style.transform = "";
+
+    });
+
+});
+
+
+/* MOBILE MENU */
+
+document.querySelector(".menu")
+.addEventListener("click", () => {
+
+    const links = document.querySelector(".nav-links");
+
+    if(links.style.display === "flex") {
+
+        links.style.display = "";
+
+    } else {
+
+        links.style.display = "flex";
+        links.style.position = "absolute";
+        links.style.top = "70px";
+        links.style.left = "0";
+        links.style.width = "100%";
+        links.style.padding = "30px";
+        links.style.flexDirection = "column";
+        links.style.background = "var(--bg)";
+        links.style.borderBottom = "1px solid var(--line)";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
