@@ -591,58 +591,15 @@ h2 {
     transform: scale(1.07);
 }
 
-/* Caption below artwork */
-
-.work-caption {
-    padding: 16px 2px 8px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-
-    border-bottom: 1px solid var(--line);
-}
-
-.work-caption-left {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.work-caption-title {
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--text);
-}
-
-.work-caption-type {
-    font-family: "DM Mono", monospace;
-    font-size: 8px;
-    letter-spacing: 1px;
-    color: var(--muted);
-    text-transform: uppercase;
-}
-
-.work-caption-arrow {
-    color: var(--muted);
-    font-size: 14px;
-    transition: .3s;
-}
-
-.work:hover .work-caption-arrow {
-    color: var(--text);
-    transform: translate(3px, -3px);
-}
-
 #lightboxVideo {
-    display: none;
-
     max-width: 100%;
-    max-height: 80vh;
+    max-height: 100%;
 
     object-fit: contain;
 
     background: #000;
+
+    display: none;
 }
 
 #lightboxVideo.active {
@@ -1190,71 +1147,137 @@ footer {
 
 .lightbox-content {
     width: min(1100px, 82vw);
-
     height: 92vh;
-
     display: flex;
-
     flex-direction: column;
-
-    justify-content: center;
-
+    justify-content: flex-start;
     align-items: center;
+}
+
+/* Project caption — always above the artwork */
+.lightbox-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-top: 28px;
+    padding-bottom: 30px;
+    flex-shrink: 0;
+    gap: 30px;
+}
+
+.lightbox-project {
+    max-width: 720px;
+}
+
+.lightbox-title {
+    font-family: "Playfair Display", serif;
+    font-style: italic;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 400;
+    line-height: .95;
+    letter-spacing: -1.5px;
+    color: #f1eee8;
+    margin-bottom: 12px;
+}
+
+.lightbox-type {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #888;
+    font-family: "DM Mono", monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 17px;
+}
+
+.lightbox-type::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+}
+
+.lightbox-description {
+    color: #999;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    line-height: 1.75;
+    max-width: 580px;
+    margin: 0;
+    font-weight: 300;
+}
+
+.lightbox-counter {
+    color: #666;
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    padding-top: 8px;
+    position: relative;
+}
+
+.lightbox-counter::before {
+    content: "";
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: #444;
+    vertical-align: middle;
+    margin-right: 10px;
 }
 
 .lightbox-image-container {
     width: 100%;
-
-    height: 82vh;
-
+    flex: 1;
+    min-height: 0;
     display: flex;
-
     justify-content: center;
-
     align-items: center;
-
     position: relative;
 }
 
 .lightbox-content img {
     max-width: 100%;
-
-    max-height: 80vh;
-
+    max-height: 100%;
     object-fit: contain;
-
-    transition:
-        opacity .25s ease,
-        transform .35s ease;
+    transition: opacity .25s ease, transform .35s ease;
 }
 
-.lightbox-info {
-    width: 100%;
+#lightboxVideo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    background: #000;
+    display: none;
+}
 
-    display: flex;
+#lightboxVideo.active { display: block; }
 
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-top: 18px;
-
+.video-thumbnail {
+    width: 55px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 1px solid #444;
+    background: linear-gradient(135deg, #222, #080808);
+    color: white;
     font-family: "DM Mono", monospace;
-
-    font-size: 9px;
-
-    color: #888;
-
-    text-transform: uppercase;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: .55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .25s;
 }
 
-.lightbox-title {
-    color: #ddd;
-}
-
-.lightbox-counter {
-    color: #777;
-}
+.video-thumbnail:hover { opacity: .85; }
+.video-thumbnail.active { opacity: 1; border: 1px solid white; }
 
 
 /* ARROWS */
@@ -1338,11 +1361,10 @@ footer {
 .thumbnails {
     position: absolute;
 
-    bottom: 25px;
+    bottom: 22px;
     left: 50%;
 
-    transform:
-        translateX(-50%);
+    transform: translateX(-50%);
 
     display: flex;
 
@@ -1355,6 +1377,8 @@ footer {
     padding: 5px;
 
     scrollbar-width: none;
+
+    z-index: 20;
 }
 
 .thumbnails::-webkit-scrollbar {
@@ -1592,34 +1616,63 @@ footer {
 
     .lightbox-content {
         width: 100%;
-
         height: 90vh;
     }
 
-    .lightbox-image-container {
-        height: 72vh;
+    .lightbox-info {
+        width: 88vw;
+        padding-top: 12px;
+        padding-bottom: 18px;
+        gap: 15px;
     }
 
-    .lightbox-content img {
-        max-width: 88vw;
+    .lightbox-project {
+        max-width: 75vw;
+    }
 
-        max-height: 68vh;
+    .lightbox-title {
+        font-size: clamp(28px, 8vw, 40px);
+        letter-spacing: -1px;
+    }
+
+    .lightbox-type {
+        margin-bottom: 12px;
+    }
+
+    .lightbox-description {
+        font-size: 11px;
+        line-height: 1.6;
+        max-width: 75vw;
+    }
+
+    .lightbox-counter {
+        padding-top: 5px;
+    }
+
+    .lightbox-counter::before {
+        display: none;
+    }
+
+    .lightbox-image-container {
+        height: auto;
+        flex: 1;
+        min-height: 0;
+    }
+
+    .lightbox-content img,
+    #lightboxVideo {
+        max-width: 88vw;
+        max-height: 100%;
     }
 
     .lightbox-arrow {
         width: 45px;
         height: 45px;
-
         font-size: 16px;
     }
 
-    .lightbox-arrow.prev {
-        left: 10px;
-    }
-
-    .lightbox-arrow.next {
-        right: 10px;
-    }
+    .lightbox-arrow.prev { left: 10px; }
+    .lightbox-arrow.next { right: 10px; }
 
     .close {
         right: 18px;
@@ -1627,7 +1680,8 @@ footer {
     }
 
     .thumbnails {
-        bottom: 12px;
+        bottom: 10px;
+        max-width: 88vw;
     }
 
     .thumbnail {
@@ -1911,43 +1965,25 @@ footer {
                 assets/orc side.jpg.jpeg,
                 assets/orc back.jpg.jpeg,
                 assets/orc close up.jpg.jpeg,
-                assets/orc wireframe.jpg.jpeg
-            "
+                assets/orc wireframe.jpg.jpeg"
+            data-description="Sculpted in zbrush and textured in Substance Painter. This particular character was an excellent study for anatomy a beautiful concept by Wei Wong. The armour was created in Maya and is an original concept and textured inside Substance as well."
             onclick="openLightbox(this)">
             <div class="work-image">
                 <img src="assets/orc front.jpg.jpeg" alt="Arnold, The Orc">
                 <div class="work-overlay"><span>↗</span></div>
-            </div>
-            <div class="work-caption">
-                <div class="work-caption-left">
-                    <div class="work-caption-title">Arnold, The Orc</div>
-                    <div class="work-caption-type">
-                        Sculpted in zbrush and textured in Substance Painter. This particular character was an excellent study for anatomy a beautiful concept by Wei Wong. The armour was created in Maya and is an original concept and textured inside Substance as well. 
-                    </div>
-                </div>
-                <span class="work-caption-arrow">↗</span>
             </div>
         </div>
 
         <div class="work reveal" data-category="creature" data-title="Mermaid Bust"
             data-images="
                 assets/mermaid bust front.jpg.jpeg,
-                assets/mermaid bust side.jpg.jpeg
-            "
+                assets/mermaid bust side.jpg.jpeg"
+            data-description="Sculpted entirely in zbrush. This piece came to be when I was introduced to Forest Roger’s works. Inspired by his fantastical creature it made me want to explore forms and how much can be communicated just with humble clay."
             data-video="assets/bust grey_1.0001.mp4"
             onclick="openLightbox(this)">
             <div class="work-image">
                 <img src="assets/mermaid bust front.jpg.jpeg" alt="Mermaid Bust">
                 <div class="work-overlay"><span>↗</span></div>
-            </div>
-            <div class="work-caption">
-                <div class="work-caption-left">
-                    <div class="work-caption-title">Mermaid Bust</div>
-                    <div class="work-caption-type">
-                        Sculpted entirely in zbrush. This piece came to be when I was introduced to Forest Roger’s works. Inspired by his fantastical creature it made me want to explore forms and how much can be communicated just with humble clay. 
-                    </div>
-                </div>
-                <span class="work-caption-arrow">↗</span>
             </div>
         </div>
 
@@ -1956,21 +1992,12 @@ footer {
                 assets/something fishy day.jpg.jpeg,
                 assets/something fishy night.jpg.jpeg,
                 assets/something fishy close-up.jpg.jpeg,
-                assets/something fishy wireframe.jpg.jpeg
-            "
+                assets/something fishy wireframe.jpg.jpeg"
+            data-description="Created in Maya and hand painted inside Substance Painter. This piece for me was entirely about the texture. Which is why I spent days hand painting them to deliver that nostalgia and comfort of a Ghibli movie. I wanted to create an environment which would make the viewer want to step inside. Original concept by art Mike Deng."
             onclick="openLightbox(this)">
             <div class="work-image">
                 <img src="assets/something fishy close-up.jpg.jpeg" alt="Something Fishy">
                 <div class="work-overlay"><span>↗</span></div>
-            </div>
-            <div class="work-caption">
-                <div class="work-caption-left">
-                    <div class="work-caption-title">Something Fishy</div>
-                    <div class="work-caption-type">
-                        Created in Maya and hand painted inside Substance Painter. This piece for me was entirely about the texture. Which is why I spent days hand painting them to deliver that nostalgia and comfort of a Ghibli movie. I wanted to create an environment which would make the viewer want to step inside. Original concept by art Mike Deng.
-                    </div>
-                </div>
-                <span class="work-caption-arrow">↗</span>
             </div>
         </div>
 
@@ -1979,22 +2006,13 @@ footer {
                 assets/cart beauty shot.jpg.jpeg,
                 assets/cart close up.jpg.jpeg,
                 assets/cart back.jpg.jpeg,
-                assets/cart wireframe.jpg.jpeg
-            "
+                assets/cart wireframe.jpg.jpeg"
+            data-description="This asset was made entirely in Maya and textured inside Substance Painter and finally rendered in maya Arnold. This asset was inspired by ancient Japanese style carts user during war time primarily to delivery food and weaponry. Original concept by Tokkun studios."
             data-video="assets/cart_1.0001.mp4"
             onclick="openLightbox(this)">
             <div class="work-image">
                 <img src="assets/cart beauty shot.jpg.jpeg" alt="Japanese War Cart">
                 <div class="work-overlay"><span>↗</span></div>
-            </div>
-            <div class="work-caption">
-                <div class="work-caption-left">
-                    <div class="work-caption-title">Japanese War Cart</div>
-                    <div class="work-caption-type">
-                        This asset was made entirely in Maya and textured inside Substance Painter and finally rendered in maya Arnold. This asset was inspired by ancient Japanese style carts user during war time primarily to delivery food and weaponry. Original concept by Tokkun studios. 
-                    </div>
-                </div>
-                <span class="work-caption-arrow">↗</span>
             </div>
         </div>
 
@@ -2541,92 +2559,46 @@ footer {
 <div
     class="lightbox"
     id="lightbox">
-    <span
-        class="close"
-        onclick="closeLightbox()">
 
-        ×
-
-    </span>
-
-
-    <!-- LEFT ARROW -->
+    <span class="close" onclick="closeLightbox()">×</span>
 
     <button
         class="lightbox-arrow prev"
         onclick="previousImage()"
         aria-label="Previous image">
-
         ←
-
     </button>
-
-
-    <!-- MAIN CONTENT -->
 
     <div class="lightbox-content">
 
+        <!-- Project caption stays at the TOP -->
+        <div class="lightbox-info">
+            <div class="lightbox-project">
+                <div class="lightbox-title" id="lightboxTitle"></div>
+                <div class="lightbox-type" id="lightboxType"></div>
+                <p class="lightbox-description" id="lightboxDescription"></p>
+            </div>
+
+            <div class="lightbox-counter" id="lightboxCounter"></div>
+        </div>
 
         <div class="lightbox-image-container">
-
-            <img
-                id="lightboxImage"
-                src=""
-                alt="Artwork">
-            <video
-                id="lightboxVideo"
-                controls
-                playsinline
-                preload="metadata">
-            </video>
-
+            <img id="lightboxImage" src="" alt="Artwork">
+            <video id="lightboxVideo" controls playsinline preload="metadata"></video>
         </div>
-
-
-        <div class="lightbox-info">
-
-            <span
-                class="lightbox-title"
-                id="lightboxTitle">
-
-            </span>
-
-
-            <span
-                class="lightbox-counter"
-                id="lightboxCounter">
-
-            </span>
-
-        </div>
-
 
     </div>
-
-
-    <!-- RIGHT ARROW -->
 
     <button
         class="lightbox-arrow next"
         onclick="nextImage()"
         aria-label="Next image">
-
         →
-
     </button>
 
-
-    <!-- THUMBNAILS -->
-
-    <div
-        class="thumbnails"
-        id="thumbnails">
-
-    </div>
-
+    <div class="thumbnails" id="thumbnails"></div>
 
 </div>
-
 
 <script>
 
@@ -2795,10 +2767,6 @@ function openLightbox(work) {
 
     currentSlides = [];
 
-    /*
-        Add all artwork images first.
-    */
-
     images.forEach(image => {
 
         currentSlides.push({
@@ -2807,11 +2775,6 @@ function openLightbox(work) {
         });
 
     });
-
-
-    /*
-        Add the turntable LAST.
-    */
 
     if (video) {
 
@@ -2822,28 +2785,42 @@ function openLightbox(work) {
 
     }
 
-
     currentIndex = 0;
 
     currentArtworkTitle =
         work.dataset.title;
 
+    /* PROJECT TITLE */
 
     document.getElementById(
         "lightboxTitle"
     ).textContent =
-        currentArtworkTitle;
+        work.dataset.title;
+
+
+    /* PROJECT TYPE */
+
+    document.getElementById(
+        "lightboxType"
+    ).textContent =
+        `${(work.dataset.category || "PROJECT").toUpperCase()} · 2026`;
+
+
+    /* PROJECT DESCRIPTION */
+
+    document.getElementById(
+        "lightboxDescription"
+    ).textContent =
+        work.dataset.description || "";
 
 
     createThumbnails();
 
     updateLightbox();
 
-
     document.getElementById(
         "lightbox"
     ).classList.add("open");
-
 
     document.body.style.overflow =
         "hidden";
@@ -2888,6 +2865,17 @@ function updateLightbox() {
 
     if (slide.type === "image") {
 
+        const currentWork = Array.from(
+            document.querySelectorAll(".work")
+        ).find(
+            work => work.dataset.title === currentArtworkTitle
+        );
+
+        document.getElementById(
+            "lightboxType"
+        ).textContent =
+            `${(currentWork?.dataset.category || "PROJECT").toUpperCase()} · 2026`;
+
         image.src = slide.src;
 
         image.alt =
@@ -2920,6 +2908,11 @@ function updateLightbox() {
     */
 
     else if (slide.type === "video") {
+
+        document.getElementById(
+            "lightboxType"
+        ).textContent =
+            "TURNTABLE · 360° VIEW";
 
         video.src = slide.src;
 
