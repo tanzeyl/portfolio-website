@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>THE ART OF — 3D Sculptor</title>
+<title>Areena Fatima - Portfolio</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -477,12 +477,9 @@ h2 {
 
 .work {
     position: relative;
-
-    overflow: hidden;
-
+    overflow: visible;
     cursor: pointer;
-
-    background: var(--surface);
+    background: transparent;
 }
 
 .work:nth-child(1) {
@@ -571,6 +568,94 @@ h2 {
     margin-top: 5px;
 }
 
+.work-image {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    aspect-ratio: inherit;
+}
+
+.work-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+
+    transition:
+        transform 1s cubic-bezier(.2,.7,.2,1);
+
+    filter: saturate(.75);
+}
+
+.work:hover .work-image img {
+    transform: scale(1.07);
+}
+
+/* Caption below artwork */
+
+.work-caption {
+    padding: 16px 2px 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    border-bottom: 1px solid var(--line);
+}
+
+.work-caption-left {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.work-caption-title {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+}
+
+.work-caption-type {
+    font-family: "DM Mono", monospace;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.work-caption-arrow {
+    color: var(--muted);
+    font-size: 14px;
+    transition: .3s;
+}
+
+.work:hover .work-caption-arrow {
+    color: var(--text);
+    transform: translate(3px, -3px);
+}
+
+#lightboxVideo {
+    display: none;
+
+    max-width: 100%;
+    max-height: 80vh;
+
+    object-fit: contain;
+
+    background: #000;
+}
+
+#lightboxVideo.active {
+    display: block;
+}
+
+.lightbox-video-label {
+    font-family: "DM Mono", monospace;
+    font-size: 9px;
+    color: #888;
+    text-transform: uppercase;
+}
+
 
 /* =========================================================
    ABOUT
@@ -597,19 +682,14 @@ h2 {
 
 .about-image {
     height: 650px;
-
     overflow: hidden;
-
     background: var(--surface);
 }
 
 .about-image img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
-    filter: grayscale(100%);
 }
 
 .about-text h2 {
@@ -1622,8 +1702,7 @@ footer {
             </div>
 
             <p>
-                Creating characters, creatures and worlds
-                somewhere between imagination and reality.
+                Every idea begs to become real, every design demands to exist and I listen.
             </p>
 
         </div>
@@ -1782,204 +1861,107 @@ footer {
     </div>
 
     <div class="gallery">
-
-
-        <!-- ARTWORK 1 -->
-
-        <div
-            class="work reveal"
-            data-category="concept"
-            data-title="The Concept Cart"
-
+        <div class="work reveal" data-category="creature" data-title="Arnold, The Orc"
             data-images="
-                assets/care wireframe.jpg.jpeg,
-                assets/cart alternate close up.jpg.jpeg,
-                assets/cart back.jpg.jpeg,
-                assets/cart beauty shot.jpg.jpeg,
-                assets/cart close up.jpg.jpeg,
-                
+                assets/orc front.jpg.jpeg,
+                assets/orc side.jpg.jpeg,
+                assets/orc back.jpg.jpeg,
+                assets/orc close up.jpg.jpeg,
+                assets/orc wireframe.jpg.jpeg
             "
-
             onclick="openLightbox(this)">
-
-            <img
-                src="assets/cart beauty shot.jpg.jpeg"
-                alt="The Concept Cart">
-
-            <div class="work-overlay">
-
-                <div>
-
-                    <div class="work-title">
-                        The Concept Cart
-                    </div>
-
-                    <div class="work-type">
-                        CONCEPT · 2026
-                    </div>
-
-                </div>
-
-                <span>
-                    ↗
-                </span>
-
+            <div class="work-image">
+                <img src="assets/orc front.jpg.jpeg" alt="Arnold, The Orc">
+                <div class="work-overlay"><span>↗</span></div>
             </div>
-
+            <div class="work-caption">
+                <div class="work-caption-left">
+                    <div class="work-caption-title">Arnold, The Orc</div>
+                    <div class="work-caption-type">
+                        Sculpted in zbrush and textured in Substance Painter. This particular character was an excellent study for anatomy a beautiful concept by Wei Wong. The armour was created in Maya and is an original concept and textured inside Substance as well. 
+                    </div>
+                </div>
+                <span class="work-caption-arrow">↗</span>
+            </div>
         </div>
 
-
-        <!-- ARTWORK 2 -->
-
-        <div
-            class="work reveal"
-            data-category="creature"
-            data-title="The Enchanted Mermaid"
-
+        <div class="work reveal" data-category="creature" data-title="Mermaid Bust"
             data-images="
                 assets/mermaid bust front.jpg.jpeg,
                 assets/mermaid bust side.jpg.jpeg
             "
-
+            data-video="assets/bust grey_1.0001.mp4"
             onclick="openLightbox(this)">
-
-            <img
-                src="assets/mermaid bust front.jpg.jpeg"
-                alt="The Enchanted Mermaid">
-
-            <div class="work-overlay">
-
-                <div>
-
-                    <div class="work-title">
-                        The Enchanted Mermaid
-                    </div>
-
-                    <div class="work-type">
-                        CREATURE · 2026
-                    </div>
-
-                </div>
-
-                <span>
-                    ↗
-                </span>
-
+            <div class="work-image">
+                <img src="assets/mermaid bust front.jpg.jpeg" alt="Mermaid Bust">
+                <div class="work-overlay"><span>↗</span></div>
             </div>
-
+            <div class="work-caption">
+                <div class="work-caption-left">
+                    <div class="work-caption-title">Mermaid Bust</div>
+                    <div class="work-caption-type">
+                        Sculpted entirely in zbrush. This piece came to be when I was introduced to Forest Roger’s works. Inspired by his fantastical creature it made me want to explore forms and how much can be communicated just with humble clay. 
+                    </div>
+                </div>
+                <span class="work-caption-arrow">↗</span>
+            </div>
         </div>
 
-
-        <!-- ARTWORK 3 -->
-
-        <div
-            class="work reveal"
-            data-category="creature"
-            data-title="The Furious Orc"
-
+        <div class="work reveal" data-category="concept" data-title="Something Fishy"
             data-images="
-                assets/orc front.jpg.jpeg,
-                assets/orc front alt.jpg.jpeg,
-                assets/orc close up.jpg.jpeg,
-                assets/orc side.jpg.jpeg,
-                assets/orc back.jpg.jpeg,
-                assets/orc wireframe.jpg.jpeg
-            "
-
-            onclick="openLightbox(this)">
-
-            <img
-                src="assets/orc front.jpg.jpeg"
-                alt="The Furious Orc">
-
-            <div class="work-overlay">
-
-                <div>
-
-                    <div class="work-title">
-                        The Furious Orc
-                    </div>
-
-                    <div class="work-type">
-                        CREATURE · 2025
-                    </div>
-
-                </div>
-
-                <span>
-                    ↗
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- ARTWORK 4 -->
-
-        <div
-            class="work reveal"
-            data-category="concept"
-            data-title="Something's Fishy"
-
-            data-images="
-                assets/something fishy close-up.jpg.jpeg,
-                assets/something fishy day alt.jpg.jpeg,
                 assets/something fishy day.jpg.jpeg,
                 assets/something fishy night.jpg.jpeg,
-                assets/something fishynight alt.jpg.jpeg,
+                assets/something fishy close-up.jpg.jpeg,
                 assets/something fishy wireframe.jpg.jpeg
             "
-
             onclick="openLightbox(this)">
-
-            <img
-                src="assets/something fishy close-up.jpg.jpeg"
-                alt="Something's Fishy">
-
-            <div class="work-overlay">
-
-                <div>
-
-                    <div class="work-title">
-                        Something's Fishy
-                    </div>
-
-                    <div class="work-type">
-                        CONCEPT · 2025
-                    </div>
-
-                </div>
-
-                <span>
-                    ↗
-                </span>
-
+            <div class="work-image">
+                <img src="assets/something fishy close-up.jpg.jpeg" alt="Something Fishy">
+                <div class="work-overlay"><span>↗</span></div>
             </div>
-
+            <div class="work-caption">
+                <div class="work-caption-left">
+                    <div class="work-caption-title">Something Fishy</div>
+                    <div class="work-caption-type">
+                        Created in Maya and hand painted inside Substance Painter. This piece for me was entirely about the texture. Which is why I spent days hand painting them to deliver that nostalgia and comfort of a Ghibli movie. I wanted to create an environment which would make the viewer want to step inside. Original concept by art Mike Deng.
+                    </div>
+                </div>
+                <span class="work-caption-arrow">↗</span>
+            </div>
         </div>
+
+        <div class="work reveal" data-category="concept" data-title="Japanese War Cart"
+            data-images="
+                assets/cart beauty shot.jpg.jpeg,
+                assets/cart close up.jpg.jpeg,
+                assets/cart back.jpg.jpeg,
+                assets/cart wireframe.jpg.jpeg
+            "
+            data-video="assets/cart_1.0001.mp4"
+            onclick="openLightbox(this)">
+            <div class="work-image">
+                <img src="assets/cart beauty shot.jpg.jpeg" alt="Japanese War Cart">
+                <div class="work-overlay"><span>↗</span></div>
+            </div>
+            <div class="work-caption">
+                <div class="work-caption-left">
+                    <div class="work-caption-title">Japanese War Cart</div>
+                    <div class="work-caption-type">
+                        This asset was made entirely in Maya and textured inside Substance Painter and finally rendered in maya Arnold. This asset was inspired by ancient Japanese style carts user during war time primarily to delivery food and weaponry. Original concept by Tokkun studios. 
+                    </div>
+                </div>
+                <span class="work-caption-arrow">↗</span>
+            </div>
+        </div>
+
 </section>
 
-
-<!-- =======================================================
-     ABOUT
-======================================================== -->
-
-<section
-    class="about"
-    id="about">
+<section class="about" id="about">
 
 <div class="container">
-
     <div class="about-grid">
-
-
         <div class="about-image reveal">
-
-            <img
-                src="images/artist.jpg"
-                alt="Artist">
-
+            <img src="assets/Artist.jpeg" alt="Artist">
         </div>
 
 
@@ -1988,54 +1970,13 @@ footer {
             <div class="eyebrow">
                 02 — ABOUT
             </div>
-
-
-            <h2>
-
-                Built from<br>
-
-                <span class="serif">
-                    imagination.
-                </span>
-
-            </h2>
-
-
+            <p>Hi, I’m Areena Fatima — a character artist, digital sculptor, and hard-surface 3D artisan working as a freelance artist.</p>
             <p>
-
-                I'm a 3D sculptor and character artist
-                fascinated by faces, anatomy, creatures
-                and the tiny details that make fictional
-                beings feel alive.
-
-            </p>
-
-
-            <p>
-
-                My work moves between digital sculpture,
-                character design, collectibles and visual
-                development.
-
+                My work moves between organic sculpting and hard-surface modelling, realism and stylisation. I’m inspired by the world around me and the ideas that live in my imagination, and I strive to bring them into 3D — turning every concept into something tangible, expressive, and alive.
             </p>
 
 
             <div class="info-list">
-
-
-                <div class="info-row">
-
-                    <span>
-                        ROLE
-                    </span>
-
-                    <span>
-                        3D SCULPTOR
-                    </span>
-
-                </div>
-
-
                 <div class="info-row">
 
                     <span>
@@ -2043,7 +1984,7 @@ footer {
                     </span>
 
                     <span>
-                        ZBRUSH · BLENDER
+                        MAYA · ZBRUSH · SUBSTANCE PAINTER
                     </span>
 
                 </div>
@@ -2069,7 +2010,7 @@ footer {
                     </span>
 
                     <span>
-                        SELECT COMMISSIONS
+                        FREELANCE, PROJECT BASED, FULL TIME
                     </span>
 
                 </div>
@@ -2238,7 +2179,7 @@ footer {
     <div class="feature-box reveal">
 
         <img
-            src="images/featured.jpg"
+            src="assets/something fishy close-up.jpg.jpeg"
             alt="Featured project">
 
 
@@ -2480,7 +2421,7 @@ footer {
 
                 <a href="mailto:hello@yourname.com">
 
-                    hello@yourname.com
+                    areenafatima21@gmail.com
 
                 </a>
 
@@ -2495,8 +2436,19 @@ footer {
 
                 <a href="#">
 
-                    @yourhandle
+                    @areena_03
 
+                </a>
+
+            </div>
+
+            <div class="contact-item">
+
+                <small>
+                    Art Station
+                </small>
+
+                <a target="_blank" href="https://www.artstation.com/areenafatima"> areenafatima
                 </a>
 
             </div>
@@ -2519,7 +2471,7 @@ footer {
 
 
         <a
-            href="mailto:hello@yourname.com"
+            href="mailto:areenafatima21@gmail.com"
             class="circle-arrow">
 
             ↗
@@ -2533,35 +2485,18 @@ footer {
 
 </section>
 
-
-<!-- =======================================================
-     FOOTER
-======================================================== -->
-
 <footer>
-
     <span>
         © 2026 THE ART OF — ALL RIGHTS RESERVED.
     </span>
-
     <span>
         3D SCULPTOR · CHARACTER ARTIST · CREATOR
     </span>
-
 </footer>
-
-
-<!-- =======================================================
-     LIGHTBOX / ARTWORK CAROUSEL
-======================================================== -->
 
 <div
     class="lightbox"
     id="lightbox">
-
-
-    <!-- CLOSE -->
-
     <span
         class="close"
         onclick="closeLightbox()">
@@ -2594,6 +2529,12 @@ footer {
                 id="lightboxImage"
                 src=""
                 alt="Artwork">
+            <video
+                id="lightboxVideo"
+                controls
+                playsinline
+                preload="metadata">
+            </video>
 
         </div>
 
@@ -2793,50 +2734,52 @@ filters.forEach(
     }
 );
 
-
-/* =========================================================
-   LIGHTBOX VARIABLES
-========================================================= */
-
-let currentImages = [];
-
+let currentSlides = [];
 let currentIndex = 0;
-
 let currentArtworkTitle = "";
-
-
-/* =========================================================
-   OPEN LIGHTBOX
-========================================================= */
 
 function openLightbox(work) {
 
+    const images = work.dataset.images
+        .split(",")
+        .map(image => image.trim())
+        .filter(image => image.length > 0);
+
+    const video = work.dataset.video
+        ? work.dataset.video.trim()
+        : null;
+
+    currentSlides = [];
 
     /*
-        Get all images from data-images.
-
-        Example:
-
-        data-images="
-            images/front.jpg,
-            images/side.jpg,
-            images/back.jpg
-        "
+        Add all artwork images first.
     */
 
-    currentImages =
-        work.dataset.images
-            .split(",")
-            .map(
-                image => image.trim()
-            )
-            .filter(
-                image => image.length > 0
-            );
+    images.forEach(image => {
+
+        currentSlides.push({
+            type: "image",
+            src: image
+        });
+
+    });
+
+
+    /*
+        Add the turntable LAST.
+    */
+
+    if (video) {
+
+        currentSlides.push({
+            type: "video",
+            src: video
+        });
+
+    }
 
 
     currentIndex = 0;
-
 
     currentArtworkTitle =
         work.dataset.title;
@@ -2850,7 +2793,6 @@ function openLightbox(work) {
 
     createThumbnails();
 
-
     updateLightbox();
 
 
@@ -2861,73 +2803,117 @@ function openLightbox(work) {
 
     document.body.style.overflow =
         "hidden";
-
 }
 
-
-/* =========================================================
-   UPDATE LIGHTBOX IMAGE
-========================================================= */
-
 function updateLightbox() {
-
 
     const image =
         document.getElementById(
             "lightboxImage"
         );
 
-
-    image.style.opacity = "0";
-
-    image.style.transform =
-        "scale(.98)";
-
-
-    setTimeout(
-        function() {
-
-            image.src =
-                currentImages[currentIndex];
+    const video =
+        document.getElementById(
+            "lightboxVideo"
+        );
 
 
-            image.onload =
-                function() {
+    /*
+        Stop any currently playing video.
+    */
 
-                    image.style.opacity =
-                        "1";
+    video.pause();
 
-                    image.style.transform =
-                        "scale(1)";
+    video.removeAttribute("src");
 
-                };
+    video.load();
 
-        },
-        120
-    );
 
+    image.style.display = "none";
+
+    video.classList.remove("active");
+
+
+    const slide =
+        currentSlides[currentIndex];
+
+
+    /*
+        IMAGE SLIDE
+    */
+
+    if (slide.type === "image") {
+
+        image.src = slide.src;
+
+        image.alt =
+            currentArtworkTitle;
+
+        image.style.display =
+            "block";
+
+        image.style.opacity = "0";
+
+        image.style.transform =
+            "scale(.98)";
+
+
+        image.onload = function() {
+
+            image.style.opacity =
+                "1";
+
+            image.style.transform =
+                "scale(1)";
+
+        };
+
+    }
+
+
+    /*
+        VIDEO SLIDE
+    */
+
+    else if (slide.type === "video") {
+
+        video.src = slide.src;
+
+        video.classList.add("active");
+
+        /*
+            Automatically start the turntable
+            when the visitor reaches it.
+        */
+
+        video.play().catch(
+            () => {
+                /*
+                    Browser may block autoplay.
+                    Controls are still available.
+                */
+            }
+        );
+
+    }
+
+
+    /*
+        Counter
+    */
 
     document.getElementById(
         "lightboxCounter"
     ).textContent =
-        `${currentIndex + 1} / ${currentImages.length}`;
+        `${currentIndex + 1} / ${currentSlides.length}`;
 
 
     updateActiveThumbnail();
-
 }
-
-
-/* =========================================================
-   NEXT IMAGE
-========================================================= */
 
 function nextImage() {
 
-
-    if (
-        currentImages.length <= 1
-    ) {
+    if (currentSlides.length <= 1) {
         return;
     }
 
@@ -2937,7 +2923,7 @@ function nextImage() {
 
     if (
         currentIndex >=
-        currentImages.length
+        currentSlides.length
     ) {
 
         currentIndex = 0;
@@ -2946,20 +2932,11 @@ function nextImage() {
 
 
     updateLightbox();
-
 }
-
-
-/* =========================================================
-   PREVIOUS IMAGE
-========================================================= */
 
 function previousImage() {
 
-
-    if (
-        currentImages.length <= 1
-    ) {
+    if (currentSlides.length <= 1) {
         return;
     }
 
@@ -2967,27 +2944,18 @@ function previousImage() {
     currentIndex--;
 
 
-    if (
-        currentIndex < 0
-    ) {
+    if (currentIndex < 0) {
 
         currentIndex =
-            currentImages.length - 1;
+            currentSlides.length - 1;
 
     }
 
 
     updateLightbox();
-
 }
 
-
-/* =========================================================
-   CREATE THUMBNAILS
-========================================================= */
-
 function createThumbnails() {
-
 
     const container =
         document.getElementById(
@@ -2998,73 +2966,109 @@ function createThumbnails() {
     container.innerHTML = "";
 
 
-    /*
-        Don't show thumbnails if
-        artwork only has one image.
-    */
-
-    if (
-        currentImages.length <= 1
-    ) {
-
+    if (currentSlides.length <= 1) {
         return;
-
     }
 
 
-    currentImages.forEach(
-        function(image, index) {
+    currentSlides.forEach(
+        function(slide, index) {
+
+            if (slide.type === "image") {
+
+                const thumbnail =
+                    document.createElement(
+                        "img"
+                    );
+
+                thumbnail.src =
+                    slide.src;
+
+                thumbnail.className =
+                    "thumbnail";
+
+                thumbnail.alt =
+                    `${currentArtworkTitle} view ${index + 1}`;
 
 
-            const thumbnail =
-                document.createElement(
-                    "img"
+                thumbnail.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        currentIndex =
+                            index;
+
+                        updateLightbox();
+
+                    }
                 );
 
 
-            thumbnail.src =
-                image;
+                container.appendChild(
+                    thumbnail
+                );
+
+            }
 
 
-            thumbnail.className =
-                "thumbnail";
+            /*
+                VIDEO THUMBNAIL
+
+                Since a video doesn't have a
+                thumbnail image, create a
+                styled video button.
+            */
+
+            else if (
+                slide.type === "video"
+            ) {
+
+                const thumbnail =
+                    document.createElement(
+                        "button"
+                    );
 
 
-            thumbnail.alt =
-                `${currentArtworkTitle} view ${index + 1}`;
+                thumbnail.className =
+                    "thumbnail video-thumbnail";
 
 
-            thumbnail.addEventListener(
-                "click",
-                function(event) {
-
-                    event.stopPropagation();
-
-                    currentIndex =
-                        index;
-
-                    updateLightbox();
-
-                }
-            );
+                thumbnail.innerHTML =
+                    "▶";
 
 
-            container.appendChild(
-                thumbnail
-            );
+                thumbnail.title =
+                    "Play turntable";
+
+
+                thumbnail.addEventListener(
+                    "click",
+                    function(event) {
+
+                        event.stopPropagation();
+
+                        currentIndex =
+                            index;
+
+                        updateLightbox();
+
+                    }
+                );
+
+
+                container.appendChild(
+                    thumbnail
+                );
+
+            }
 
         }
     );
-
 }
 
-
-/* =========================================================
-   ACTIVE THUMBNAIL
-========================================================= */
-
 function updateActiveThumbnail() {
-
 
     const thumbnails =
         document.querySelectorAll(
